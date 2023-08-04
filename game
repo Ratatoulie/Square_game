@@ -1,0 +1,378 @@
+rect("land",getWidth(),getHeight(),0,0,"green");
+//path to village
+
+var path=new Rectangle(150,500);
+path.setPosition(125,-50);
+path.setColor("grey");
+add(path);
+
+var passage = new Rectangle(700, 150);
+passage.setPosition(275, -50);
+passage.setColor("grey");
+add(passage);
+var pathway = new Rectangle(150, 700);
+pathway.setPosition(825, -750);
+pathway.setColor("grey");
+add(pathway);
+var passageway = new Rectangle(500, 150);
+passageway.setPosition(825, -750);
+passageway.setColor("grey");
+add(passageway);
+var enemyMan = new Rectangle(50, 50);
+enemyMan.setPosition(575, -185);
+enemyMan.setColor("blue");
+add(enemyMan);
+
+var pathOne= [path,passage,pathway,passageway,enemyMan];
+//village
+var village = new Rectangle(700, 700);
+village.setPosition(1325, -1000);
+village.setColor("tan");
+add(village);
+var houseOne=new Rectangle(150, 150);
+houseOne.setPosition(1425, -885);
+houseOne.setColor("brown");
+add(houseOne);
+var houseTwo=new Rectangle(150, 150);
+houseTwo.setPosition(1725, -885);
+houseTwo.setColor("brown");
+add(houseTwo);
+var houseThree=new Rectangle(150, 150);
+houseThree.setPosition(1425, -525);
+houseThree.setColor("brown");
+add(houseThree);
+var houseFour=new Rectangle(150, 150);
+houseFour.setPosition(1725, -525);
+houseFour.setColor("brown");
+add(houseFour);
+//npcs
+var villageElder = new Rectangle(50, 50);
+villageElder.setPosition(1625, -685);
+villageElder.setColor("purple");
+add(villageElder);
+
+var villOne= [village,houseOne,houseTwo,houseThree,houseFour,villageElder];
+//path to wife mountain
+var pass = new Rectangle(700, 150);
+pass.setPosition(2025, -750);
+pass.setColor("DarkSlateGrey");
+add(pass);
+var pas = new Rectangle(150, 900);
+pas.setPosition(2675, -1500);
+pas.setColor("DarkSlateGrey");
+add(pas);
+var pathTwo=[pass,pas];
+//wife mountain
+var mount=new Rectangle(700,800);
+mount.setPosition(2375,-2285);
+mount.setColor("azure");
+add(mount);
+var ville=new Rectangle(500,500);
+ville.setPosition(2475,-2135);
+ville.setColor("DarkCyan");
+add(ville);
+var houseUno=new Rectangle(150,150);
+houseUno.setPosition(2525,-2085);
+houseUno.setColor("brown");
+add(houseUno);
+var houseDos=new Rectangle(150,150);
+houseDos.setPosition(2775,-2085);
+houseDos.setColor("brown");
+add(houseDos);
+var houseTres=new Rectangle(150,150);
+houseTres.setPosition(2525,-1835);
+houseTres.setColor("brown");
+add(houseTres);
+var houseQuatro=new Rectangle(150,150);
+houseQuatro.setPosition(2775,-1835);
+houseQuatro.setColor("brown");
+add(houseQuatro);
+var villageWife=new Rectangle(50,50);
+villageWife.setPosition(2825,-1785);
+villageWife.setColor("Purple");
+add(villageWife);
+var villTwo=[mount,ville,houseUno,houseDos,houseTres,houseQuatro,villageWife];
+//path to bees
+var space = new Rectangle(700, 150);
+space.setPosition(3000, -1750);
+space.setColor("DarkSlateGrey");
+add(space);
+var hall = new Rectangle(150, 900);
+hall.setPosition(3700, -850);
+hall.setColor("DarkSlateGrey");
+add(hall);
+var pathThree=[space,hall];
+//player/enemies
+//fast travel village
+var travel=new Rectangle(50,50);
+travel.setPosition(1475,-835);
+travel.setColor("yellow");
+add(travel);
+var fast=new Rectangle(50,50);
+fast.setPosition((getWidth()/2)-25,(getHeight()/2)+125);
+fast.setColor("yellow");
+add(fast);
+//fast travel to wife mountain
+var travelOne=new Rectangle(50,50);
+travelOne.setPosition(1775,-835);
+travelOne.setColor("yellow");
+add(travelOne);
+var fastOne=new Rectangle(50,50);
+fastOne.setPosition(2575,-2035);
+fastOne.setColor("yellow");
+add(fastOne);
+var fastTravel=[travel,fast,travelOne,fastOne];
+
+var world=[pathOne,villOne,fastTravel,pathTwo,villTwo,pathThree];
+
+var playerMan = new Rectangle(50, 50);
+playerMan.setPosition((getWidth()/2)-25, (getHeight()/2)-25);
+playerMan.setColor("red");
+add(playerMan);
+
+//death screen
+
+var lives = 3;
+var life;
+var objective;
+var objectives="Objective: none";
+var enemyLife=3;
+var contact=0;
+var textbox;
+var texts;
+var text;
+
+function start(){
+    setTimer(lifeCount, 50);
+    setTimer(collision, 50);
+    setTimer(speedTravel, 50);
+    keyDownMethod(move);
+    
+}
+
+function move(e) {
+    if(e.keyCode==Keyboard.UP){
+        movement(0,50);
+    }
+    if(e.keyCode==Keyboard.DOWN){
+        movement(0,-50);
+    }
+    if(e.keyCode==Keyboard.LEFT){
+        movement(50,0);
+        /*if(knife.getX()==225){
+            knife.move(-80,0)
+        }*/
+        
+    }
+    if(e.keyCode==Keyboard.RIGHT){
+        movement(-50,0);
+        /*if(knife.getX()==145){
+            knife.move(80,0)
+        }*/
+    }
+}
+function rect(name,xs,ys,posx,posy,col){
+    var name=new Rectangle(xs,ys);
+    name.setPosition(posx,posy);
+    name.setColor(col);
+    add(name);
+}
+function movement(x,y){
+    for(var j=0;j<world.length;j++){
+        for(var i=0;i<world[j].length;i++){
+            world[j][i].move(x,y);
+        }
+    }
+}
+function lifeCount(){
+    remove(life);
+    life = new Text(lives, "30pt Arial");
+    life.setPosition(10, 30);
+    life.setColor("red");
+    add(life);
+    if(lives==0){
+        remove(playerMan);
+        rect("death",getWidth(),getHeight(),0,0,"black");
+        stopTimer(lifeCount); 
+        stopTimer(collision);
+        println("You died!!")
+    }
+    remove(objective);
+    objective = new Text(objectives, "20pt Arial");
+    objective.setPosition(130, 30);
+    objective.setColor("orangered")
+    add(objective);
+    
+}
+function interaction(sayer){
+    var is=getElementAt(sayer.getX(),sayer.getY())==getElementAt(playerMan.getX(),playerMan.getY());
+    return is;
+}
+function speech(){
+    textbox=new Rectangle(getWidth(), getHeight()/4);
+    textbox.setPosition(0,(getHeight()/4)*3);
+    textbox.setColor("white");
+    add(textbox);
+    remove(texts);
+    texts = new Text(text, "20pt Arial");
+    texts.setPosition(10, (getHeight()/4)*3+60);
+    texts.setColor("black")
+    add(texts);
+}
+function collision(){
+    
+    if(interaction(enemyMan)){
+        lives--;
+        movement(100,0);
+    }
+    //interaction with husband
+    if(interaction(villageElder)){
+        movement(50,0);
+        contact++;
+        if(contact==1){
+            text="Woah! A person!";
+            remove(texts);
+            remove(textbox);
+            speech();
+        }
+        if(contact==2){
+            text="You wanna live here?";
+            remove(texts);
+            remove(textbox);
+            speech();
+        }
+        if(contact==3){
+            text="I built this whole village,";
+            remove(texts);
+            remove(textbox);
+            speech();
+        }
+        if(contact==4){
+            text="but nobody showed up!";
+            remove(texts);
+            remove(textbox);
+            speech();
+        }
+        if(contact==5){
+            text="No?";
+            remove(texts);
+            remove(textbox);
+            speech();
+        }
+        if(contact==6){
+            text="Awwwwwww...";
+            remove(texts);
+            remove(textbox);
+            speech();
+        }
+        if(contact==7){
+            text="then can you help find my wife?";
+            remove(texts);
+            remove(textbox);
+            speech();
+        }
+        if(contact==8){
+            text="I don't know where she went...";
+            remove(texts);
+            remove(textbox);
+            speech();
+        }
+        if(contact==9){
+            remove(textbox);
+            remove(texts);
+            objectives="Objective: Find Wife";
+            
+            contact=0;
+        }
+        
+        
+    }
+    //interaction with wife
+    if(interaction(villageWife)){
+        movement(50,0);
+        contact++;
+        if(contact==1){
+            text="who are you?";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==2){
+            text="Did HE send you?";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==3){
+            text="*Scoff*";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==4){
+            text="So invsted in his stupid village";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==5){
+            text="Couldn't even get one person";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==6){
+            text="Even me.";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==7){
+            text="I'm not going back. Ever.";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==8){
+            text="Well...";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==9){
+            text="Maybe if he had some honey...";
+            remove(texts);
+            remove(textbox);
+            speech();  
+        }
+        if(contact==10){
+            remove(textbox);
+            remove(texts);
+            objectives="Objective: Find Honey";
+            
+            contact=0;
+        }
+    }
+    
+
+
+}
+function scrollText(){
+    for(var i=0;i<8;i++){
+        println("");
+    }
+}
+function speedTravel(){
+    if(interaction(travel)){
+        movement(1300,-1150);
+    }
+    if(interaction(fast)){
+        movement(-1300,1150);
+    }
+    if(interaction(travelOne)){
+        movement(-850,1200);
+    }
+    if(interaction(fastOne)){
+        movement(850,-1200);
+    }
+}
